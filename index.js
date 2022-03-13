@@ -1,29 +1,18 @@
 import express from "express";
 import morgan from "morgan";
-
-const app = express();
+import globalRouter from "./routers/globalRouter";
+import userRouter from "./routers/userRouter";
+import videoRouter from "./routers/videoRouter";
 
 const PORT = 4000;
-const handleListening = () => {
-    console.log("Server is listening");
-}
 
-app.listen(PORT, handleListening);
-
+const app = express();
 const logger = morgan("dev");
 
-const protecter = (req, res, next) => {
-    if(req.url === "/protected"){
-        res.send("not allowed");
-    }
-    next();
-}
-
-const handleHome = (req, res) => {
-    return res.send("hi this is home");
-}
-
-
+const handleListen = () => {console.log(`listening on ${PORT}`)}
+app.listen(PORT, handleListen);
 app.use(logger);
-app.use(protecter);
-app.get("/", handleHome);
+
+app.use("/", globalRouter);
+app.use("/users", userRouter);
+app.use("/videos", videoRouter);
