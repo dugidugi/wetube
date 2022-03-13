@@ -1,0 +1,29 @@
+{
+  "name": "wetube",
+  "version": "1.0.0",
+  "description": "youtube clone coding project",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dugidugi/wetube.git"
+  },
+  "author": "dugi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dugidugi/wetube/issues"
+  },
+  "homepage": "https://github.com/dugidugi/wetube#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.5",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "nodemon": "^2.0.15"
+  }
+}
