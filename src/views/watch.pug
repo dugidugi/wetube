@@ -1,3 +1,10 @@
 extends base.pug
+
 block content
-    h1 Watch Video
+    div
+        h2=video.title
+        p=video.description
+        small=video.creadtAt
+    a(href=`${video.id}/edit`) Edit Video &rarr;
+    br
+    a(href=`${video.id}/delete`) Delete Video &rarr;
