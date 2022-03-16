@@ -1,5 +1,6 @@
 import { redirect } from "express/lib/response";
 import User from "../models/User";
+import bcrypt from "bcrypt";
 
 export const getJoin = (req, res) => {
     res.render("join");
@@ -22,6 +23,26 @@ export const postJoin = async(req, res) => {
 
 export const edit = (req, res) => res.send("Edit User");
 export const remove = (req, res) => res.send("Remove User");
-export const login = (req, res) => res.send("Login");
+
+export const getLogin = (req, res) => {
+    const pageTitle = "Login"
+    res.render("login", {pageTitle});
+}
+export const postLogin = async(req, res) => {
+    const {username, password} = req.body;
+    const user = await User.findOne({username});
+
+    if(!user){
+        return res.status(400).render("login", {errorMessage: "Username not found"});
+    }
+
+    const ok = await bcrypt.compare(password, user.password);
+    if(!ok){
+        return res.status(400).render("login", {errorMessage: "Password is wrond"});
+    }
+
+    res.redirect("/");
+}
+
 export const logout = (req, res) => res.send("Log out");
 export const see = (req, res) => res.send("See User");
