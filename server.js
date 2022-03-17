@@ -2,6 +2,7 @@ import express from "express";
 import morgan from "morgan";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import "dotenv/config";
 
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/userRouter";
@@ -16,12 +17,14 @@ app.set("views", process.cwd() + "/src/views/");
 
 app.use(
     session({
-        secret: "hello!",
-        store: MongoStore.create({ mongoUrl: 'mongodb://127.0.0.1:27017/wetube'}),
+        secret: process.env.COOKIE_SECRET ,
+        store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
         resave: false,
         saveUninitialized: false,
     })
 );
+
+console.log(process.env.COOKIE_SECRET);
 
 app.use(localsMiddleware);
 
