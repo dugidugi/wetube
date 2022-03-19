@@ -1,6 +1,7 @@
-import { redirect } from "express/lib/response";
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import "dotenv/config";
+import fetch from "node-fetch";
 
 export const getJoin = (req, res) => {
     res.render("join");
@@ -48,7 +49,7 @@ export const postLogin = async(req, res) => {
 export const startGithubLogin = (req, res) => {
     const baseUrl = "https://github.com/login/oauth/authorize";
     const config = {
-        client_id : "f30f9a5177567cad79a9",
+        client_id : process.env.GH_CLIENT,
         scope :  "read:user user:email",
         allow_signup : false,
     };
@@ -56,6 +57,42 @@ export const startGithubLogin = (req, res) => {
     const finalUrl = `${baseUrl}?${params}`;
     console.log(finalUrl);
     return res.redirect(finalUrl);
+}
+
+export const finishGithubLogin = async(req, res) => {
+    const {code} = req.query;
+    const baseUrl = "https://github.com/login/oauth/access_token";
+    const config = {
+        client_id: process.env.GH_CLIENT,
+        client_secret: process.env.GH_SECRET,
+        code
+    };
+    
+    const params = new URLSearchParams(config).toString();
+    const finalUrl = `${baseUrl}?${params}`;
+
+    const tokenRequest = await (
+        await fetch(finalUrl,{
+            method: 'POST', 
+            headers: {
+                Accept: "application/json"
+            }
+        })
+    ).json();
+    const {access_token} = tokenRequest;
+    
+    if(access_token){
+        const userRequest = await(
+            await fetch("https://api.github.com/user/emails",{
+                headers: {
+                    Authorization : `token ${access_token}`
+                }
+            })
+        ).json();
+        console.log(userRequest);
+    }else{
+        return res.redirect("/login");
+    }
 }
 
 export const logout = (req, res) => res.send("Log out");
