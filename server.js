@@ -24,7 +24,6 @@ app.use(
     })
 );
 
-console.log(process.env.COOKIE_SECRET);
 
 app.use(localsMiddleware);
 

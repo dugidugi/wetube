@@ -22,7 +22,14 @@ export const postJoin = async(req, res) => {
     return res.redirect("/login");
 };
 
-export const edit = (req, res) => res.send("Edit User");
+export const getEdit = (req, res) => {
+    return res.render("edit-profile");
+}
+
+export const postEdit = async (req,res) => {
+    return res.render("edit-profile");
+}
+
 export const remove = (req, res) => res.send("Remove User");
 
 export const getLogin = (req, res) => {
