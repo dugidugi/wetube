@@ -1,10 +1,12 @@
 extends base
 
 block content
+    if errorMessage
+        span=errorMessage
     form(method="POST")
         input(name="name", placeholder="name", type="text", required, value = loggedInUser.name)
         input(name="email", placeholder="email", type="text", required, value = loggedInUser.email)
         input(name="username", placeholder="username", type="text", required value = loggedInUser.username)
-        input(name="location", placeholder="location", type="text", requiredvalue = loggedInUser.locations)
+        input(name="location", placeholder="location", type="text", required value = loggedInUser.location)
         input(type="submit", value="edit save")
         

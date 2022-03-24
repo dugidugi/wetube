@@ -27,7 +27,32 @@ export const getEdit = (req, res) => {
 }
 
 export const postEdit = async (req,res) => {
-    return res.render("edit-profile");
+    const {
+        session : { 
+            user : {_id}
+        },
+        body : {name, email, username, location}
+    } = req;
+    console.log(location);
+
+    if(email !== req.session.user.email){
+        const emailExist = await User.findOne({email});
+        if(emailExist){
+            return res.status(400).render("edit-profile", {errorMessage: "existing Email!"});
+        }
+    }
+
+    if(username !== req.session.user.username){
+        const usernameExist = await User.findOne({username});
+        if(usernameExist){
+            return res.status(400).render("edit-profile", {errorMessage: "existing Username!"});
+        }
+    }
+    
+    const updateUser = await User.findByIdAndUpdate(_id, {
+        name, email, username, location}, {new: true});
+    req.session.user = updateUser;
+    return res.redirect("/users/edit");
 }
 
 export const remove = (req, res) => res.send("Remove User");

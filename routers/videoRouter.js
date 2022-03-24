@@ -7,6 +7,7 @@ import {
   postUpload,
   deleteVideo,
 } from "../controllers/videoController";
+import { protectorMiddleware } from "../middlewares";
 
 const videoRouter = express.Router();
 
