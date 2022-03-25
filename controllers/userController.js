@@ -2,6 +2,7 @@ import User from "../models/User";
 import bcrypt from "bcrypt";
 import "dotenv/config";
 import fetch from "node-fetch";
+import req from "express/lib/request";
 
 export const getJoin = (req, res) => {
     res.render("join");
@@ -170,4 +171,39 @@ export const logout = (req, res) => {
     req.session.destroy();
     res.redirect("/");
 }
+
 export const see = (req, res) => res.send("See User");
+
+export const getChangePassword = (req, res) => {
+    if(req.session.user.socialOnly){
+        return res.redirect("/");
+    }
+    return res.render("users/change-password", { pageTitle: "Change Password" });
+}
+
+export const postChangePassword = async (req, res) => {
+    const { 
+        session : {
+            user : {_id}},
+        body : {
+            oldPassword, newPassword, newPasswordConfirm
+        }
+    } = req;
+
+    const user = await User.findById({_id});
+    const ok = await bcrypt.compare(oldPassword, user.password);
+    
+    if(!ok){
+        return res.render("users/change-password", { pageTitle: "Change Password", errorMessage:"old Password not correct"});
+    }
+    
+    if(newPassword !== newPasswordConfirm){
+        return res.render("users/change-password", { pageTitle: "Change Password", errorMessage:"Password Confirm does not match"});
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    return res.redirect("/logout");
+}
+
