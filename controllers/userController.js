@@ -32,9 +32,10 @@ export const postEdit = async (req,res) => {
         session : { 
             user : {_id}
         },
-        body : {name, email, username, location}
+        body : {name, email, username, location},
+        file
     } = req;
-    console.log(location);
+    console.log(file);
 
     if(email !== req.session.user.email){
         const emailExist = await User.findOne({email});

@@ -1,3 +1,5 @@
+import multer from "multer";
+
 export const localsMiddleware = (req, res, next) => {
     res.locals.siteName="Wetube";
     res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -18,3 +20,5 @@ export const publicOnlyMiddleware = (req, res, next) => {
     }
     return next();
 }
+
+export const uploadAvatar = multer({dest: "uploads/"});
