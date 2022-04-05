@@ -19,6 +19,8 @@ html(lang="ko")
                             a(href="/users/edit") Edit Profile
                         li
                             a(href="/logout") Logout
+                        li  
+                            a(href=`/users/${loggedInUser._id}`) User profile
                     else 
                         li
                             a(href="/login") Login

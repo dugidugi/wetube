@@ -10,7 +10,7 @@ userRouter.route("/edit")
         .get(getEdit)
         .post(uploadAvatar.single("avatar"), postEdit);
 userRouter.get("/remove", remove);
-userRouter.get(":id", see);
+userRouter.get("/:id", see);
 userRouter.get("/github/start", startGithubLogin);
 userRouter.get("/github/finish", finishGithubLogin);
 userRouter.route("/change-password").all(protectorMiddleware).get(getChangePassword).post(postChangePassword);
